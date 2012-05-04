@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+cd `dirname $0`
+
+rsync -Cacv --delete \
+    --exclude="*.template" \
+    htdocs/ /srv/www/gpf.fuktommy.com/
+
+rsync -Cacv --delete libs/ /srv/lib/php/gpf.fuktommy.com/libs/
+rsync -Cacv --delete plugins/ /srv/lib/php/gpf.fuktommy.com/plugins/
+rsync -Cacv --delete templates/ /srv/templates/gpf.fuktommy.com/
