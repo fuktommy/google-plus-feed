@@ -158,7 +158,10 @@ class Context
         require_once 'Smarty.class.php';
         $smarty = new \Smarty();
         $smarty->template_dir = $this->config['smarty_template_dir'];
-        $smarty->plugins_dir += $this->config['smarty_plugins_dir'];
+        $smarty->plugins_dir = array_merge(
+            $smarty->plugins_dir,
+            $this->config['smarty_plugins_dir']
+        );
         $smarty->compile_dir = $this->config['smarty_compile_dir'];
         $smarty->cache_dir = $this->config['smarty_cache_dir'];
         return $smarty;
