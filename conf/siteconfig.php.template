@@ -4,19 +4,22 @@ setlocale(LC_ALL, 'en_US.UTF-8');
 date_default_timezone_set('Asia/Tokyo');
 ini_set('user_agent', 'User-Agent: http://fuktommy.com/'); 
 
+$appRoot = __DIR__ . '/..';
+
 return array(
     'w3ctimezone' => '+09:00',
 
     'site_top' => 'http://gpf.fuktommy.com/',
     'rights' => 'http://creativecommons.org/licenses/by/2.1/jp/',
 
-    'log_dir'        => '/var/local/log/blog',
-    'gplus_cache_dir' => '/var/local/cache/gplusfeed',
+    'libs_dir'        => "{$appRoot}/app/libs",
+    'log_dir'         => "{$appRoot}/log",
+    'gplus_cache_dir' => "{$appRoot}/tmp/gplus_cache",
 
-    'smarty_template_dir' => '/srv/templates/gpf.fuktommy.com',
-    'smarty_plugins_dir' => array('/srv/lib/php/gpf.fuktommy.com/plugins'),
-    'smarty_compile_dir' => '/var/cache/smarty/templates_c/gpf.fuktommy.com',
-    'smarty_cache_dir' => '/var/cache/smarty/cache/gpf.fuktommy.com',
+    'smarty_template_dir' => "{$appRoot}/app/templates",
+    'smarty_plugins_dir' => array("{$appRoot}/app/plugins"),
+    'smarty_compile_dir' => "{$appRoot}/tmp/templates_c",
+    'smarty_cache_dir' => "{$appRoot}/tmp/smarty_cache",
 
     'gplusfeed_default_userid' => '104787602969620799839', // Fuktommy
 
