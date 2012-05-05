@@ -26,6 +26,7 @@
  * SUCH DAMAGE.
  */
 namespace GooglePlusFeed\Web;
+use GooglePlusFeed\Config\Bootstrap;
 
 /**
  * Web IO.
@@ -90,8 +91,11 @@ class Context
      * Factory
      * @return GooglePlusFeed\Web\Context
      */
-    public static function factory(array $config)
+    public static function factory(array $config = array())
     {
+        if (empty($config)) {
+            $config = Bootstrap::$config;
+        }
         $instance = new self();
         $instance->config = $config;
         $instance->get = $_GET;
@@ -174,6 +178,7 @@ class Context
      */
     public function getLog($ident = '')
     {
+        require_once 'Log.php';
         $logfile = $this->config['log_dir'] . strftime('/debug.%Y%m%d.log');
         return \Log::singleton('file', $logfile, $ident);
     }

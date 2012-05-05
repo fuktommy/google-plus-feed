@@ -1,12 +1,17 @@
 #!/bin/sh -e
 
 cd `dirname $0`
+app_root=/srv/www/gpf.fuktommy.com
 
 rsync -Cacv --delete \
     --exclude="*.template" \
-    conf/ /srv/lib/php/gpf.fuktommy.com/conf/
+    --exclude="- /setup.sh" \
+    ./ $app_root/app/
 
-rsync -Cacv --delete htdocs/ /srv/www/gpf.fuktommy.com/
-rsync -Cacv --delete libs/ /srv/lib/php/gpf.fuktommy.com/libs/
-rsync -Cacv --delete plugins/ /srv/lib/php/gpf.fuktommy.com/plugins/
-rsync -Cacv --delete templates/ /srv/templates/gpf.fuktommy.com/
+rsync -CacvL --exclude="*.template" conf/ $app_root/conf/
+
+mkdir -v -m 0777 -p $app_root/log
+mkdir -v -m 0777 -p $app_root/tmp
+mkdir -v -m 0777 -p $app_root/tmp/gplus_cache
+mkdir -v -m 0777 -p $app_root/tmp/smarty_cache
+mkdir -v -m 0777 -p $app_root/tmp/templates_c

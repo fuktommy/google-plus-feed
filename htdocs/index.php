@@ -26,7 +26,7 @@
  * SUCH DAMAGE.
  */
 namespace GooglePlusFeed;
-require_once 'bootstrap.php';
+require_once __DIR__ . '/../libs/bootstrap.php';
 
 use GooglePlusFeed\Web;
 use GooglePlusFeed\App;
@@ -83,8 +83,7 @@ class GplusFeedAction implements Web\Action
 }
 
 
-$config = require_once 'siteconfig.php';
-$context = Web\Context::factory($config);
+$context = Web\Context::factory();
 if ($context->get('server', 'SCRIPT_FILENAME') === __FILE__) {
     App\Controller::factory()->run(new GplusFeedAction(), $context);
 }

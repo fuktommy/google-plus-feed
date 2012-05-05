@@ -25,23 +25,37 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+namespace GooglePlusFeed\Config;
 
-require_once('Log.php');
-
-
-function __autoload($className)
+/**
+ * Bootstrap.
+ * @pacpage GooglePlusFeed
+ * @subpackage Config
+ */
+class Bootstrap
 {
-    $path = strtr($className, array('\\' => '/'))
-          . '.php';
-    require_once $path;
+    public static $config = array();
+
+    public static function autoload($className)
+    {
+        $path = self::$config['libs_dir'] . DIRECTORY_SEPARATOR
+              . strtr($className, array('\\' => DIRECTORY_SEPARATOR))
+              . '.php';
+        require_once $path;
+    }
+
+    public static function handleError($errno, $errstr, $errfile, $errline)
+    {
+        throw new \RuntimeException("{$errstr} in {$errfile} on line {$errline}", $errno);
+    }
+
+    public static function init()
+    {
+        spl_autoload_register(__NAMESPACE__ . '\\Bootstrap::autoload');
+        set_error_handler(__NAMESPACE__ . '\\Bootstrap::handleError',
+                          E_ERROR | E_WARNING | E_PARSE | E_RECOVERABLE_ERROR);
+        self::$config = require __DIR__ . '/../../conf/siteconfig.php';
+    }
 }
 
-spl_autoload_register('__autoload');
-
-
-function myHandleError($errno, $errstr, $errfile, $errline)
-{
-    throw new RuntimeException("{$errstr} in {$errfile} on line {$errline}", $errno);
-}
-
-set_error_handler('myHandleError', E_ERROR | E_WARNING | E_PARSE | E_RECOVERABLE_ERROR);
+Bootstrap::init();
