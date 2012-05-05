@@ -3,11 +3,12 @@
 // local variables
 $appRoot = __DIR__ . '/..';
 
-// configration
+// global settings
 setlocale(LC_ALL, 'en_US.UTF-8');
 date_default_timezone_set('Asia/Tokyo');
 ini_set('user_agent', 'https://github.com/fuktommy/google-plus-feed');
 
+// configration
 return array(
     'w3ctimezone' => '+09:00',
 

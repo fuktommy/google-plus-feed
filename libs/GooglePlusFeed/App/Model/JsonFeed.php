@@ -27,7 +27,7 @@
  * SUCH DAMAGE.
  */
 namespace GooglePlusFeed\App\Model;
-use GooglePlusFeed\Web\Context;
+use GooglePlusFeed\Web\Resource;
 
 /**
  * Google+ Json Feed.
@@ -50,18 +50,18 @@ class JsonFeed
     private $_cacheTime = 600;
 
     /**
-     * @var GooglePlusFeed\Web\Context
+     * @var GooglePlusFeed\Web\Resource
      */
-    private $_context;
+    private $_resource;
 
     /**
      * Constructor
-     * @param GooglePlusFeed\Web\Context
+     * @param GooglePlusFeed\Web\Resource
      */
-    public function __construct(Context $context)
+    public function __construct(Resource $resource)
     {
-        $this->_context = $context;
-        $this->_cacheDir = $context->config['gplus_cache_dir'];
+        $this->_resource = $resource;
+        $this->_cacheDir = $resource->config['gplus_cache_dir'];
     }
 
     /**
@@ -95,7 +95,7 @@ class JsonFeed
             return file_get_contents($cacheFile);
         }
 
-        $log = $this->_context->getLog('gplusfeed');
+        $log = $this->_resource->getLog('gplusfeed');
         $lock = fopen("{$this->_cacheDir}/lock", 'w');
         $lockSuccess = flock($lock, LOCK_EX|LOCK_NB);
         if ($lockSuccess) {

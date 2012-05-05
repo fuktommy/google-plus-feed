@@ -82,27 +82,17 @@ class Context
     /**
      * Constructor
      */
-    private function __construct()
+    public function __construct(array $config)
     {
-    }
-
-    /**
-     * Factory
-     * @return GooglePlusFeed\Web\Context
-     */
-    public static function factory(array $config = array())
-    {
-        $instance = new self();
-        $instance->config = $config;
-        $instance->get = $_GET;
-        $instance->post = $_POST;
-        $instance->cookie = $_COOKIE;
-        $instance->request = $_REQUEST;
-        $instance->header = is_callable('getallheaders')
-                          ? getallheaders() : array();
-        $instance->server = $_SERVER;
-        $instance->files = $_FILES;
-        return $instance;
+        $this->config = $config;
+        $this->get = $_GET;
+        $this->post = $_POST;
+        $this->cookie = $_COOKIE;
+        $this->request = $_REQUEST;
+        $this->header = is_callable('getallheaders')
+                      ? getallheaders() : array();
+        $this->server = $_SERVER;
+        $this->files = $_FILES;
     }
 
     /**
@@ -177,5 +167,14 @@ class Context
         require_once 'Log.php';
         $logfile = $this->config['log_dir'] . strftime('/debug.%Y%m%d.log');
         return \Log::singleton('file', $logfile, $ident);
+    }
+
+    /**
+     * Factory for model settings.
+     * @return GooglePlusFeed\Web\Resource
+     */
+    public function getResource()
+    {
+        return new Resource($this);
     }
 }

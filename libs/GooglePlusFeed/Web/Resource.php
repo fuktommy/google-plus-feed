@@ -1,7 +1,7 @@
 <?php
-/* Bootstrap.
+/* Model IO.
  *
- * Copyright (c) 2010,2012 Satoshi Fukutomi <info@fuktommy.com>.
+ * Copyright (c) 2012 Satoshi Fukutomi <info@fuktommy.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,43 +25,41 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-namespace GooglePlusFeed;
+namespace GooglePlusFeed\Web;
 
 /**
- * Bootstrap.
- * @pacpage GooglePlusFeed
- * @subpackage Config
+ * Model IO.
+ * @package GooglePlusFeed
+ * @subpackage Web
  */
-class Bootstrap
+class Resource
 {
-    public static function autoload($className)
-    {
-        $path = __DIR__ . DIRECTORY_SEPARATOR
-              . strtr($className, array('\\' => DIRECTORY_SEPARATOR))
-              . '.php';
-        require_once $path;
-    }
+    /**
+     * @var array
+     */
+    public $config = array();
 
-    public static function handleError($errno, $errstr, $errfile, $errline)
-    {
-        throw new \RuntimeException("{$errstr} in {$errfile} on line {$errline}", $errno);
-    }
+    /**
+     * @var GooglePlusFeed\Web\Context
+     */
+    private $_context;
 
-    public static function init()
+    /**
+     * Constructor
+     */
+    public function __construct(Context $context)
     {
-        spl_autoload_register(__NAMESPACE__ . '\\Bootstrap::autoload');
-        set_error_handler(__NAMESPACE__ . '\\Bootstrap::handleError',
-                          E_ERROR | E_WARNING | E_PARSE | E_RECOVERABLE_ERROR);
+        $this->_context = $context;
+        $this->config = $context->config;
     }
 
     /**
-     * @return GooglePlusFeed\Web\Context
+     * Factory for Log
+     * @param string $ident
+     * @return Log
      */
-    public static function getContext()
+    public function getLog($ident = '')
     {
-        $config = require __DIR__ . '/../../conf/siteconfig.php';
-        return new \GooglePlusFeed\Web\Context($config);
+        return $this->_context->getLog($ident);
     }
 }
-
-Bootstrap::init();
