@@ -25,7 +25,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-namespace GooglePlusFeed\Config;
+namespace GooglePlusFeed;
 
 /**
  * Bootstrap.
@@ -34,11 +34,9 @@ namespace GooglePlusFeed\Config;
  */
 class Bootstrap
 {
-    public static $config = array();
-
     public static function autoload($className)
     {
-        $path = self::$config['libs_dir'] . DIRECTORY_SEPARATOR
+        $path = __DIR__ . DIRECTORY_SEPARATOR
               . strtr($className, array('\\' => DIRECTORY_SEPARATOR))
               . '.php';
         require_once $path;
@@ -54,7 +52,15 @@ class Bootstrap
         spl_autoload_register(__NAMESPACE__ . '\\Bootstrap::autoload');
         set_error_handler(__NAMESPACE__ . '\\Bootstrap::handleError',
                           E_ERROR | E_WARNING | E_PARSE | E_RECOVERABLE_ERROR);
-        self::$config = require __DIR__ . '/../../conf/siteconfig.php';
+    }
+
+    /**
+     * @return GooglePlusFeed\Web\Context
+     */
+    public static function getContext()
+    {
+        $config = require __DIR__ . '/../../conf/siteconfig.php';
+        return \GooglePlusFeed\Web\Context::factory($config);
     }
 }
 

@@ -25,11 +25,11 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-namespace GooglePlusFeed;
-require_once __DIR__ . '/../libs/bootstrap.php';
+namespace GooglePlusFeed\App;
 
+require_once __DIR__ . '/../libs/bootstrap.php';
+use GooglePlusFeed\Bootstrap;
 use GooglePlusFeed\Web;
-use GooglePlusFeed\App;
 
 
 /**
@@ -43,33 +43,29 @@ class GplusFeedAction implements Web\Action
      */
     public function execute(Web\Context $context)
     {
+        // For errors and debug output.
+        $context->putHeader('Content-Type', 'text/plain; charset=utf-8');
+
         $allowedUserIds = $context->config['gplusfeed_userids'];
         $userId = $context->get('get', 'id', $context->config['gplusfeed_default_userid']);
         if ((! is_numeric($userId)) || (! in_array($userId, $allowedUserIds))) {
             $context->putHeader('HTTP/1.0 404 Not Found');
-            $context->putHeader('Content-Type', 'text/html; charset=utf-8');
             $smarty = $context->getSmarty();
             $smarty->assign('config', $context->config);
             $smarty->display('notfound.tpl');
             return;
         }
 
-        $log = $context->getLog('gplusfeed');
-        $options = array(
-            'cacheDir' => $context->config['gplus_cache_dir'],
-            'log' => $log,
-        );
-        $feedFetcher = new App\Model\JsonFeed($options);
+        $feedFetcher = new Model\JsonFeed($context);
         $feed = $feedFetcher->fetchFeed($userId);
         if (empty($feed[1][0][0][3])) {
             $feed = $feed[0];
         }
         if (empty($feed)) {
-            $log->warning("Cannot parse json: {$userId}");
+            $context->getLog('gplusfeed')->warning("Cannot parse json: {$userId}");
         }
 
         if ($context->get('get', 'debug')) {
-            $context->putHeader('Content-Type', 'text/plain; charset=utf-8');
             var_dump($feed);
             return;
         }
@@ -83,7 +79,4 @@ class GplusFeedAction implements Web\Action
 }
 
 
-$context = Web\Context::factory();
-if ($context->get('server', 'SCRIPT_FILENAME') === __FILE__) {
-    App\Controller::factory()->run(new GplusFeedAction(), $context);
-}
+Controller::factory()->run(new GplusFeedAction(), Bootstrap::getContext());

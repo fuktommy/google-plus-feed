@@ -12,7 +12,6 @@ return array(
     'site_top' => 'http://gpf.fuktommy.com/',
     'rights' => 'http://creativecommons.org/licenses/by/2.1/jp/',
 
-    'libs_dir'        => "{$appRoot}/app/libs",
     'log_dir'         => "{$appRoot}/log",
     'gplus_cache_dir' => "{$appRoot}/tmp/gplus_cache",
 

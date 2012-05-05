@@ -27,6 +27,7 @@
  * SUCH DAMAGE.
  */
 namespace GooglePlusFeed\App\Model;
+use GooglePlusFeed\Web\Context;
 
 /**
  * Google+ Json Feed.
@@ -49,18 +50,18 @@ class JsonFeed
     private $_cacheTime = 600;
 
     /**
-     * @var Log
+     * @var GooglePlusFeed\Web\Context
      */
-    private $_log;
+    private $_context;
 
     /**
      * Constructor
-     * @param array $options
+     * @param GooglePlusFeed\Web\Context
      */
-    public function __construct(array $options)
+    public function __construct(Context $context)
     {
-        $this->_cacheDir = $options['cacheDir'];
-        $this->_log = $options['log'];
+        $this->_context = $context;
+        $this->_cacheDir = $context->config['gplus_cache_dir'];
     }
 
     /**
@@ -94,17 +95,18 @@ class JsonFeed
             return file_get_contents($cacheFile);
         }
 
+        $log = $this->_context->getLog('gplusfeed');
         $lock = fopen("{$this->_cacheDir}/lock", 'w');
         $lockSuccess = flock($lock, LOCK_EX|LOCK_NB);
         if ($lockSuccess) {
             // go next
         } elseif (is_file($cacheFile)) {
             fclose($lock);
-            $this->_log->warning("lock failed for {$userId}");
+            $log->warning("lock failed for {$userId}");
             return file_get_contents($cacheFile);
         } else {
             fclose($lock);
-            $this->_log->warning("lock failed for {$userId} and not cached");
+            $log->warning("lock failed for {$userId} and not cached");
             return '';
         }
 
@@ -112,10 +114,10 @@ class JsonFeed
         $jsonUrl = sprintf('https://plus.google.com/_/stream/getactivities/'
                            . '?sp=[1,2,"%s",null,null,%d,null,"social.google.com",[]]',
                            $userId, $length);
-        $this->_log->info("accessing {$jsonUrl}");
+        $log->info("accessing {$jsonUrl}");
         $json = @file_get_contents($jsonUrl);
         if (empty($json)) {
-            $this->_log->warning("empty {$jsonUrl}");
+            $log->warning("empty {$jsonUrl}");
         }
         file_put_contents($cacheFile, $json);
         flock($lock, LOCK_UN);
