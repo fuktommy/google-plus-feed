@@ -34,6 +34,8 @@ namespace GooglePlusFeed;
  */
 class Bootstrap
 {
+    private static $config;
+
     public static function autoload($className)
     {
         $path = __DIR__ . DIRECTORY_SEPARATOR
@@ -44,7 +46,7 @@ class Bootstrap
 
     public static function handleError($errno, $errstr, $errfile, $errline)
     {
-        throw new \RuntimeException("{$errstr} in {$errfile} on line {$errline}", $errno);
+        throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
     public static function init()
@@ -52,6 +54,7 @@ class Bootstrap
         spl_autoload_register(__NAMESPACE__ . '\\Bootstrap::autoload');
         set_error_handler(__NAMESPACE__ . '\\Bootstrap::handleError',
                           E_ERROR | E_WARNING | E_PARSE | E_RECOVERABLE_ERROR);
+        self::$config = require __DIR__ . '/../../conf/siteconfig.php';
     }
 
     /**
@@ -59,8 +62,7 @@ class Bootstrap
      */
     public static function getContext()
     {
-        $config = require __DIR__ . '/../../conf/siteconfig.php';
-        return new \GooglePlusFeed\Web\Context($config);
+        return new \GooglePlusFeed\Web\Context(self::$config);
     }
 }
 

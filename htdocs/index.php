@@ -48,7 +48,7 @@ class GplusFeedAction implements Web\Action
 
         $allowedUserIds = $context->config['gplusfeed_userids'];
         $userId = $context->get('get', 'id', $context->config['gplusfeed_default_userid']);
-        if ((! is_numeric($userId)) || (! in_array($userId, $allowedUserIds))) {
+        if ((! ctype_digit($userId)) || (! in_array($userId, $allowedUserIds))) {
             $context->putHeader('HTTP/1.0 404 Not Found');
             $smarty = $context->getSmarty();
             $smarty->assign('config', $context->config);

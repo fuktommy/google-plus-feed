@@ -69,12 +69,12 @@ class JsonFeed
      * @param string $userId
      * @param int $length
      * @return array
-     * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
     public function fetchFeed($userId, $length = 30)
     {
-        if (! preg_match('/^\d+$/D', $userId)) {
-            throw new RuntimeException("{$userId} is not numeric");
+        if (! ctype_digit($userId)) {
+            throw new InvalidArgumentException("{$userId} is not numeric");
         }
         $json = $this->_getJsonUsingCache($userId, $length);
         $json = preg_replace('/^\S+[\r\n]+/', '', $json);
@@ -86,9 +86,24 @@ class JsonFeed
         return json_decode($json, true);
     }
 
+    private function _cacheFileOf($userId)
+    {
+        return "{$this->_cacheDir}/{$userId}.txt";
+    }
+
+    private function _readCache($userId)
+    {
+        $cacheFile = $this->_cacheFileOf($userId);
+        if (is_file($cacheFile)) {
+            return file_get_contents($cacheFile);
+        } else {
+            return '';
+        }
+    }
+
     private function _getJsonUsingCache($userId, $length)
     {
-        $cacheFile = "{$this->_cacheDir}/{$userId}.txt";
+        $cacheFile = $this->_cacheFileOf($userId);
         $readFromCache = is_file($cacheFile)
                       && (time() < filemtime($cacheFile) + $this->_cacheTime);
         if ($readFromCache) {
@@ -98,16 +113,10 @@ class JsonFeed
         $log = $this->_resource->getLog('gplusfeed');
         $lock = fopen("{$this->_cacheDir}/lock", 'w');
         $lockSuccess = flock($lock, LOCK_EX|LOCK_NB);
-        if ($lockSuccess) {
-            // go next
-        } elseif (is_file($cacheFile)) {
+        if (! $lockSuccess) {
             fclose($lock);
             $log->warning("lock failed for {$userId}");
-            return file_get_contents($cacheFile);
-        } else {
-            fclose($lock);
-            $log->warning("lock failed for {$userId} and not cached");
-            return '';
+            return $this->_readCache($userId);
         }
 
         touch($cacheFile);
@@ -115,9 +124,16 @@ class JsonFeed
                            . '?sp=[1,2,"%s",null,null,%d,null,"social.google.com",[]]',
                            $userId, $length);
         $log->info("accessing {$jsonUrl}");
-        $json = @file_get_contents($jsonUrl);
+        try {
+            $json = file_get_contents($jsonUrl);
+        } catch (ErrorException $e) {
+            // I can not catch exceptions here...
+            $log->warning("{$e->getMessage()} on {$jsonUrl}");
+            return $this->_readCache($cacheFile);
+        }
         if (empty($json)) {
             $log->warning("empty {$jsonUrl}");
+            return $this->_readCache($cacheFile);
         }
         file_put_contents($cacheFile, $json);
         flock($lock, LOCK_UN);
