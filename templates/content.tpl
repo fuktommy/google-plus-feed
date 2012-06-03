@@ -7,15 +7,19 @@
 {if ! empty($entry.object.attachments)}
     <ul>
     {foreach from=$entry.object.attachments item=attach}
-        <li><a href="{$attach.url|escape}" target="_blank">{$attach.displayName|escape}</a>
+        <li>
+        {if ! empty($attach.url)}
+            <a href="{$attach.url|escape}" target="_blank">{$attach.displayName|default:"link"|escape}</a>
+        {/if}
         {if ! empty($attach.content)}
             <blockquote><div>{$attach.content|escape}</div></blockquote>
         {/if}
         {if ! empty($attach.image)}
             <div>
             <img src="{$attach.image.url|escape}" alt=""
-                 height="{$attach.image.height|escape}
-                 width="{$attach.image.width|escape} />
+                 {if ! empty($attach.image.height)}height="{$attach.image.height|escape}"{/if}
+                 {if ! empty($attach.image.width)}width="{$attach.image.width|escape}"{/if}
+            />
             </div>
         {/if}
         </li>
