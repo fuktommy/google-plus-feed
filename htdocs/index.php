@@ -58,9 +58,6 @@ class GplusFeedAction implements Web\Action
 
         $feedFetcher = new Model\JsonFeed($context->getResource());
         $feed = $feedFetcher->fetchFeed($userId);
-        if (empty($feed[1][0][0][3])) {
-            $feed = $feed[0];
-        }
         if (empty($feed)) {
             $context->getLog('gplusfeed')->warning("Cannot parse json: {$userId}");
         }
@@ -74,6 +71,7 @@ class GplusFeedAction implements Web\Action
         $smarty = $context->getSmarty();
         $smarty->assign('config', $context->config);
         $smarty->assign('feed', $feed);
+        $smarty->assign('userId', $userId);
         $smarty->display('atom.tpl');
     }
 }

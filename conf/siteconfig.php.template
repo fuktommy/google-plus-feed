@@ -10,6 +10,8 @@ ini_set('user_agent', 'https://github.com/fuktommy/google-plus-feed');
 
 // configration
 return array(
+    'google_api_key' => 'get it on https://code.google.com/apis/console',
+
     'w3ctimezone' => '+09:00',
 
     'site_top' => 'http://gpf.fuktommy.com/',

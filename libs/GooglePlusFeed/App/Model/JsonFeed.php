@@ -77,12 +77,6 @@ class JsonFeed
             throw new InvalidArgumentException("{$userId} is not numeric");
         }
         $json = $this->_getJsonUsingCache($userId, $length);
-        $json = preg_replace('/^\S+[\r\n]+/', '', $json);
-        $json = str_replace(',,', ',null,', $json);
-        $json = str_replace(',,', ',null,', $json);
-        $json = str_replace('[,', '[null,', $json);
-        $json = str_replace(',]', ',null]', $json);
-        $json = preg_replace('/{(\d+):/', '{"$1":', $json);
         return json_decode($json, true);
     }
 
@@ -120,19 +114,18 @@ class JsonFeed
         }
 
         touch($cacheFile);
-        $jsonUrl = sprintf('https://plus.google.com/_/stream/getactivities/'
-                           . '?sp=[1,2,"%s",null,null,%d,null,"social.google.com",[]]',
-                           $userId, $length);
-        $log->info("accessing {$jsonUrl}");
+        $apiKey = $this->_resource->config['google_api_key'];
+        $jsonUrl = "https://www.googleapis.com/plus/v1/people/{$userId}/activities/public?key={$apiKey}";
+        $log->info("accessing json for {$userId}");
         try {
             $json = file_get_contents($jsonUrl);
         } catch (ErrorException $e) {
             // I can not catch exceptions here...
-            $log->warning("{$e->getMessage()} on {$jsonUrl}");
+            $log->warning("{$e->getMessage()} for {$userId}");
             return $this->_readCache($cacheFile);
         }
         if (empty($json)) {
-            $log->warning("empty {$jsonUrl}");
+            $log->warning("empty json for {$userId}");
             return $this->_readCache($cacheFile);
         }
         file_put_contents($cacheFile, $json);

@@ -1,21 +1,31 @@
 {* -*- coding: utf-8 -*- *}
-{* Copyright (c) 2011 Satoshi Fukutomi <info@fuktommy.com>. *}
-{$entry[47]|default:$entry[4]}
-{if $entry[47] && $entry[4] && ($entry[4] != $entry[47])}
-    <blockquote><div>{$entry[4]}</div></blockquote>
+{* Copyright (c) 2011,2012 Satoshi Fukutomi <info@fuktommy.com>. *}
+{if ! empty($entry.object.content)}
+    {$entry.object.content}
 {/if}
-{foreach from=$entry[11] item="link"}
-    <br /><a href="{$link[24][1]|escape}">{$link[3]|default:$link[21]}</a>
-    <blockquote cite="{$link[24][1]|escape}"><div>{$link[21]}</div></blockquote>
-{/foreach}
-{if $entry[27]}
-    <br /><a href="{$entry[27][9]|default:$entry[27][8]|escape}">{$entry[27][2]|default:$entry[27][3]|escape}</a>
+
+{if ! empty($entry.object.attachments)}
+    <ul>
+    {foreach from=$entry.object.attachments item=attach}
+        <li><a href="{$attach.url|escape}" target="_blank">{$attach.displayName|escape}</a>
+        {if ! empty($attach.content)}
+            <blockquote><div>{$attach.content|escape}</div></blockquote>
+        {/if}
+        {if ! empty($attach.image)}
+            <div>
+            <img src="{$attach.image.url|escape}" alt=""
+                 height="{$attach.image.height|escape}
+                 width="{$attach.image.width|escape} />
+            </div>
+        {/if}
+        </li>
+    {/foreach}
+    </ul>
 {/if}
-{foreach from=$entry[66][0][6] item="img"}
-    {if preg_match('|^image/|', $img[1])}
-        <br />
-        {if $img[0]}<a href="{$img[0]|escape}">{/if}
-            <img src="http:{$img[2]|escape}" alt="" />
-        {if $img[0]}</a>{/if}
-    {/if}
-{/foreach}
+
+{if ! empty($entry.placeName)}
+    {strip}
+    <a href="http://maps.google.co.jp/maps?q={$entry.geocode|replace:' ':','|escape:'url'}">
+    {$entry.placeName|escape} - {$entry.address|escape}</a>
+    {/strip}
+{/if}
