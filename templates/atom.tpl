@@ -3,7 +3,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="/atomfeed.xsl" type="text/xsl"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>{$feed.title|escape} - g+</title>
+  <title>{$feed.items[0].actor.displayName|default:$feed.title|escape} - g+</title>
   {* <subtitle>{$feed.title|escape}</subtitle> *}
   <link rel="self" href="{$config.site_top}{$userId|escape}" />
   <link rel="alternate" href="https://plus.google.com/{$userId|escape}/posts" type="text/html"/>
@@ -16,9 +16,9 @@
   {include assign="content" file="content.tpl" entry=$entry}
   <entry>
     {if $entry.title}
-        <title>{$entry.title|escape}</title>
+        <title>{$entry.title|trim|escape}</title>
     {else}
-        <title>{$content|trim|strip_tags|regex_replace:'/\s+/':' '|htmlspecialchars_decode:$smarty.const.ENT_QUOTES|mbtruncate:60|escape|default:"untitled"}</title>
+        <title>{$content|strip_tags|regex_replace:'/\s+/':' '|htmlspecialchars_decode:$smarty.const.ENT_QUOTES|trim|mbtruncate:60|escape|default:"untitled"}</title>
     {/if}
     <link rel="alternate" href="{$entry.url|escape}"/>
     <summary type="text">{$content|strip_tags|regex_replace:'/\s+/':' '}</summary>
