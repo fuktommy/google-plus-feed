@@ -25,12 +25,11 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-namespace GooglePlusFeed\Web;
+namespace Fuktommy\WebIo;
 
 /**
  * Model IO.
- * @package GooglePlusFeed
- * @subpackage Web
+ * @package Fuktommy\WebIo
  */
 class Resource
 {
@@ -40,7 +39,7 @@ class Resource
     public $config = array();
 
     /**
-     * @var GooglePlusFeed\Web\Context
+     * @var Fuktommy\WebIo\Context
      */
     private $_context;
 

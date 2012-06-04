@@ -25,12 +25,11 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-namespace GooglePlusFeed\Web;
+namespace Fuktommy\WebIo;
 
 /**
  * Web IO.
- * @package GooglePlusFeed
- * @subpackage Web
+ * @package Fuktommy\WebIo
  */
 class Context
 {
@@ -171,7 +170,7 @@ class Context
 
     /**
      * Factory for model settings.
-     * @return GooglePlusFeed\Web\Resource
+     * @return Fuktommy\WebIo\Resource
      */
     public function getResource()
     {

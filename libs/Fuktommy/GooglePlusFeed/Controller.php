@@ -1,5 +1,5 @@
 <?php
-/* Web Action.
+/* Application Controller.
  *
  * Copyright (c) 2010,2012 Satoshi Fukutomi <info@fuktommy.com>.
  * All rights reserved.
@@ -25,15 +25,35 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-
-namespace GooglePlusFeed\Web;
+namespace Fuktommy\GooglePlusFeed;
+use Fuktommy\WebIo;
 
 /**
- * Web Action
- * @package GooglePlusFeed
- * @subpackage Web
+ * Application Controller.
+ * @package Fuktommy\GooglePlusFeed
  */
-interface Action
+class Controller
 {
-    public function execute(Context $context);
+    /**
+     * Constructor
+     */
+    private function __construct()
+    {
+    }
+     
+    /**
+     * Factory
+     */
+    public static function factory()
+    {
+        return new self();
+    }
+
+    /**
+     * Run action
+     */
+    public function run(WebIo\Action $action, WebIo\Context $context)
+    {
+        $action->execute($context);
+    }
 }

@@ -25,23 +25,23 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-namespace GooglePlusFeed\App;
+namespace Fuktommy\GooglePlusFeed;
 
 require_once __DIR__ . '/../libs/bootstrap.php';
-use GooglePlusFeed\Bootstrap;
-use GooglePlusFeed\Web;
+use Fuktommy\GooglePlusFeed\Bootstrap;
+use Fuktommy\WebIo;
 
 
 /**
  * Google+ Feed.
  */
-class GplusFeedAction implements Web\Action
+class GplusFeedAction implements WebIo\Action
 {
     /**
      * Execute
-     * @param Web\Context $context
+     * @param Fuktommy\WebIo\Context $context
      */
-    public function execute(Web\Context $context)
+    public function execute(WebIo\Context $context)
     {
         // For errors and debug output.
         $context->putHeader('Content-Type', 'text/plain; charset=utf-8');

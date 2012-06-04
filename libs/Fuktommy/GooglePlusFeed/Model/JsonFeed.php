@@ -26,16 +26,16 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-namespace GooglePlusFeed\App\Model;
-use GooglePlusFeed\Web\Resource;
+namespace Fuktommy\GooglePlusFeed\Model;
+use Fuktommy\WebIo\Resource;
 
 /**
  * Google+ Json Feed.
  *
  * This class save date to cache, and so on.
  *
- * @package GooglePlusFeed
- * @subpackage App\Model
+ * @package Fuktommy\GooglePlusFeed
+ * @subpackage Model
  */
 class JsonFeed
 {
@@ -50,13 +50,13 @@ class JsonFeed
     private $_cacheTime = 600;
 
     /**
-     * @var GooglePlusFeed\Web\Resource
+     * @var Fuktommy\WebIo\Resource
      */
     private $_resource;
 
     /**
      * Constructor
-     * @param GooglePlusFeed\Web\Resource
+     * @param Fuktommy\WebIo\Resource
      */
     public function __construct(Resource $resource)
     {

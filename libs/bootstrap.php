@@ -25,11 +25,11 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-namespace GooglePlusFeed;
+namespace Fuktommy\GooglePlusFeed;
 
 /**
  * Bootstrap.
- * @pacpage GooglePlusFeed
+ * @pacpage Fuktommy\GooglePlusFeed
  * @subpackage Config
  */
 class Bootstrap
@@ -58,11 +58,11 @@ class Bootstrap
     }
 
     /**
-     * @return GooglePlusFeed\Web\Context
+     * @return Fuktommy\WebIo\Context
      */
     public static function getContext()
     {
-        return new \GooglePlusFeed\Web\Context(self::$config);
+        return new \Fuktommy\WebIo\Context(self::$config);
     }
 }
 
