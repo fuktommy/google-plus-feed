@@ -29,6 +29,7 @@ namespace Fuktommy\GooglePlusFeed;
 
 require_once __DIR__ . '/../libs/bootstrap.php';
 use Fuktommy\GooglePlusFeed\Bootstrap;
+use Fuktommy\Pubsubhubbub;
 use Fuktommy\WebIo;
 
 
@@ -56,21 +57,26 @@ class GplusFeedAction implements WebIo\Action
             return;
         }
 
-        $feedFetcher = new Model\JsonFeed($context->getResource());
+        $feedFetcher = new Model\JsonFeedFetcher($context->getResource());
         $feed = $feedFetcher->fetchFeed($userId);
-        if (empty($feed)) {
+        if (empty($feed->content)) {
             $context->getLog('gplusfeed')->warning("Cannot parse json: {$userId}");
         }
 
         if ($context->get('get', 'debug')) {
-            var_dump($feed);
+            var_dump($feed->content);
             return;
+        }
+
+        if ($feed->updated) {
+            $publisher = new Pubsubhubbub\Publisher($context->getResource());
+            $publisher->publish($userId);
         }
 
         $context->putHeader('Content-Type', 'text/xml; charset=utf-8');
         $smarty = $context->getSmarty();
         $smarty->assign('config', $context->config);
-        $smarty->assign('feed', $feed);
+        $smarty->assign('feed', $feed->content);
         $smarty->assign('userId', $userId);
         $smarty->display('atom.tpl');
     }

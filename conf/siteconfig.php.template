@@ -10,10 +10,13 @@ ini_set('user_agent', 'https://github.com/fuktommy/google-plus-feed');
 
 // configration
 return array(
-    'google_api_key' => 'get it on https://code.google.com/apis/console',
+    'google_api_key' => 'get it from https://code.google.com/apis/console',
 
     'site_top' => 'http://gpf.fuktommy.com/',
     'rights' => 'http://creativecommons.org/licenses/by/2.1/jp/',
+
+    // Pubsubhubbub. set empty to skip publish.
+    'push_publisher' => 'https://pubsubhubbub.appspot.com/publish',
 
     'log_dir'         => "{$appRoot}/log",
     'gplus_cache_dir' => "{$appRoot}/tmp/gplus_cache",

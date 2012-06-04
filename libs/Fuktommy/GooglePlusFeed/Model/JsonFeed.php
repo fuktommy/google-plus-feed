@@ -2,7 +2,7 @@
 /*
  * Google+ Json Feed.
  *
- * Copyright (c) 2011,2012 Satoshi Fukutomi <info@fuktommy.com>.
+ * Copyright (c) 2012 Satoshi Fukutomi <info@fuktommy.com>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,105 +32,29 @@ use Fuktommy\WebIo\Resource;
 /**
  * Google+ Json Feed.
  *
- * This class save date to cache, and so on.
- *
  * @package Fuktommy\GooglePlusFeed
  * @subpackage Model
  */
 class JsonFeed
 {
     /**
-     * @var string
+     * @var array|null
      */
-    private $_cacheDir;
+    public $content;
 
     /**
-     * @var int
+     * @var bool
      */
-    private $_cacheTime = 600;
-
-    /**
-     * @var Fuktommy\WebIo\Resource
-     */
-    private $_resource;
+    public $_updated;
 
     /**
      * Constructor
-     * @param Fuktommy\WebIo\Resource
+     * @param array $content
+     * @param bool $updated
      */
-    public function __construct(Resource $resource)
+    public function __construct(array $content, $updated)
     {
-        $this->_resource = $resource;
-        $this->_cacheDir = $resource->config['gplus_cache_dir'];
-    }
-
-    /**
-     * Fetch feed.
-     * @param string $userId
-     * @param int $length
-     * @return array
-     * @throws InvalidArgumentException
-     */
-    public function fetchFeed($userId, $length = 30)
-    {
-        if (! ctype_digit($userId)) {
-            throw new InvalidArgumentException("{$userId} is not numeric");
-        }
-        $json = $this->_getJsonUsingCache($userId, $length);
-        return json_decode($json, true);
-    }
-
-    private function _cacheFileOf($userId)
-    {
-        return "{$this->_cacheDir}/{$userId}.txt";
-    }
-
-    private function _readCache($userId)
-    {
-        $cacheFile = $this->_cacheFileOf($userId);
-        if (is_file($cacheFile)) {
-            return file_get_contents($cacheFile);
-        } else {
-            return '';
-        }
-    }
-
-    private function _getJsonUsingCache($userId, $length)
-    {
-        $cacheFile = $this->_cacheFileOf($userId);
-        $readFromCache = is_file($cacheFile)
-                      && (time() < filemtime($cacheFile) + $this->_cacheTime);
-        if ($readFromCache) {
-            return file_get_contents($cacheFile);
-        }
-
-        $log = $this->_resource->getLog('gplusfeed');
-        $lock = fopen("{$this->_cacheDir}/lock", 'w');
-        $lockSuccess = flock($lock, LOCK_EX|LOCK_NB);
-        if (! $lockSuccess) {
-            fclose($lock);
-            $log->warning("lock failed for {$userId}");
-            return $this->_readCache($userId);
-        }
-
-        touch($cacheFile);
-        $apiKey = $this->_resource->config['google_api_key'];
-        $jsonUrl = "https://www.googleapis.com/plus/v1/people/{$userId}/activities/public?key={$apiKey}";
-        $log->info("accessing json for {$userId}");
-        try {
-            $json = file_get_contents($jsonUrl);
-        } catch (ErrorException $e) {
-            // I can not catch exceptions here...
-            $log->warning("{$e->getMessage()} for {$userId}");
-            return $this->_readCache($cacheFile);
-        }
-        if (empty($json)) {
-            $log->warning("empty json for {$userId}");
-            return $this->_readCache($cacheFile);
-        }
-        file_put_contents($cacheFile, $json);
-        flock($lock, LOCK_UN);
-        fclose($lock);
-        return $json;
+        $this->content = $content;
+        $this->updated = $updated;
     }
 }
