@@ -1,6 +1,6 @@
 <?php
 /*
- * Pubsubhubbub Publisher.
+ * PubSubHubbub Publisher.
  *
  * Copyright (c) 2012 Satoshi Fukutomi <info@fuktommy.com>.
  * All rights reserved.
@@ -26,13 +26,13 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-namespace Fuktommy\Pubsubhubbub;
+namespace Fuktommy\PubSubHubbub;
 use Fuktommy\WebIo\Resource;
 
 /**
- * Pubsubhubbub Publisher.
+ * PubSubHubbub Publisher.
  *
- * @package Fuktommy\Pubsubhubbub
+ * @package Fuktommy\PubSubHubbub
  */
 class Publisher
 {

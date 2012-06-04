@@ -15,7 +15,7 @@ return array(
     'site_top' => 'http://gpf.fuktommy.com/',
     'rights' => 'http://creativecommons.org/licenses/by/2.1/jp/',
 
-    // Pubsubhubbub. set empty to skip publish.
+    // PubSubHubbub. set empty to skip publish.
     'push_publisher' => 'https://pubsubhubbub.appspot.com/publish',
 
     'log_dir'         => "{$appRoot}/log",

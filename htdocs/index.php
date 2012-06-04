@@ -29,7 +29,7 @@ namespace Fuktommy\GooglePlusFeed;
 
 require_once __DIR__ . '/../libs/bootstrap.php';
 use Fuktommy\GooglePlusFeed\Bootstrap;
-use Fuktommy\Pubsubhubbub;
+use Fuktommy\PubSubHubbub;
 use Fuktommy\WebIo;
 
 
@@ -69,7 +69,7 @@ class GplusFeedAction implements WebIo\Action
         }
 
         if ($feed->updated) {
-            $publisher = new Pubsubhubbub\Publisher($context->getResource());
+            $publisher = new PubSubHubbub\Publisher($context->getResource());
             $publisher->publish($userId);
         }
 
