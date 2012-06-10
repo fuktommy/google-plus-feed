@@ -52,8 +52,10 @@ class Bootstrap
     public static function init()
     {
         spl_autoload_register(__NAMESPACE__ . '\\Bootstrap::autoload');
+
+        // I would like to add E_WARNING, but try-catch doesn't work.
         set_error_handler(__NAMESPACE__ . '\\Bootstrap::handleError',
-                          E_ERROR | E_WARNING | E_PARSE | E_RECOVERABLE_ERROR);
+                          E_ERROR | E_PARSE | E_RECOVERABLE_ERROR);
         self::$config = require __DIR__ . '/../../conf/siteconfig.php';
     }
 
