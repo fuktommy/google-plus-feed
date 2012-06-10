@@ -17,7 +17,7 @@
         {$attach.displayName|default:"link"|escape}</a>
     {/if}
     {if ! empty($attach.content)}
-        <blockquote><div>{$attach.content|escape}</div></blockquote>
+        <blockquote><div>{$attach.content}</div></blockquote>
     {/if}
     {if ! empty($attach.image)}
         <div>
