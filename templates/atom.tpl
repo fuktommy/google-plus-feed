@@ -16,7 +16,7 @@
   {include assign="content" file="content.tpl" entry=$entry}
   <entry>
     {if $entry.title}
-        <title>{$entry.title|trim|escape}</title>
+        <title>{$entry.title|trim}</title>
     {else}
         <title>{$content|strip_tags|regex_replace:'/\s+/':' '|htmlspecialchars_decode:$smarty.const.ENT_QUOTES|trim|mbtruncate:60|escape|default:"untitled"}</title>
     {/if}

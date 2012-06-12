@@ -14,7 +14,7 @@
 {else}
     {if ! empty($attach.url)}
         <a href="{$attach.url|escape}">
-        {$attach.displayName|default:"link"|escape}</a>
+        {$attach.displayName|default:"link"}</a>
     {/if}
     {if ! empty($attach.content)}
         <blockquote><div>{$attach.content}</div></blockquote>
