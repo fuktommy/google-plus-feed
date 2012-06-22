@@ -2,7 +2,14 @@
 {* Copyright (c) 2011,2012 Satoshi Fukutomi <info@fuktommy.com>. *}
 {strip}
 
-{if ! empty($entry.object.content)}
+{if ! empty($entry.annotation)}
+    {$entry.annotation}
+    <ul>
+        <li><a href="{$entry.object.url|escape}">{$entry.object.actor.displayName|escape}</a>
+            <blockquote><div>{$entry.object.content}</div></blockquote>
+        </li>
+    </ul>
+{elseif ! empty($entry.object.content)}
     {$entry.object.content}
 {/if}
 
