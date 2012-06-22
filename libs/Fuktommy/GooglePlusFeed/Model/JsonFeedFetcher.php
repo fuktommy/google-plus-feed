@@ -109,7 +109,7 @@ class JsonFeedFetcher
         $lockSuccess = flock($lock, LOCK_EX|LOCK_NB);
         if (! $lockSuccess) {
             fclose($lock);
-            $log->warning("lock failed for {$userId}");
+            $log->info("lock failed for {$userId}");
             return $this->_readCache($userId);
         }
 
