@@ -77,7 +77,12 @@ class JsonFeedFetcher
         }
         $oldJson = $this->_readCache($userId);
         $json = $this->_getJsonUsingCache($userId);
-        return new JsonFeed(json_decode($json, true), $oldJson !== $json);
+        $feed = json_decode($json, true);
+        if (empty($feed)) {
+            $log->warning("empty json for {$userId}");
+            return new JsonFeed(array(), false);
+        }
+        return new JsonFeed($feed, $oldJson !== $json);
     }
 
     private function _cacheFileOf($userId)
@@ -125,7 +130,7 @@ class JsonFeedFetcher
             return $this->_readCache($cacheFile);
         }
         if (empty($json)) {
-            $log->warning("empty json for {$userId}");
+            $log->warning("empty json from api for {$userId}");
             return $this->_readCache($cacheFile);
         }
         file_put_contents($cacheFile, $json);
