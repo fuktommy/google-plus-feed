@@ -6,8 +6,8 @@
         <a href="{$attach.url|escape}">
     {/if}
     <img src="{$attach.image.url|escape}" alt="{$attach.content|escape}"
-         height="{$attach.image.height|escape}"
-         width="{$attach.image.width|escape}" />
+         {**} height="{$attach.image.height|escape}"
+         {**} width="{$attach.image.width|escape}" />
     {if ! empty($attach.url)}    
         </a>
     {/if}
@@ -22,8 +22,8 @@
     {if ! empty($attach.image)}
         <div>
         <img src="{$attach.image.url|escape}" alt=""
-            {if ! empty($attach.image.height)}height="{$attach.image.height|escape}"{/if}
-            {if ! empty($attach.image.width)}width="{$attach.image.width|escape}"{/if}
+            {if ! empty($attach.image.height)} height="{$attach.image.height|escape}"{/if}
+            {if ! empty($attach.image.width)} width="{$attach.image.width|escape}"{/if}
         />
         </div>
     {/if}
