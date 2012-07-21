@@ -79,7 +79,8 @@ class JsonFeedFetcher
         $json = $this->_getJsonUsingCache($userId);
         $feed = json_decode($json, true);
         if (empty($feed)) {
-            $log->warning("empty json for {$userId}");
+            $this->_resource->getLog('gplusfeed')
+                 ->warning("empty json for {$userId}");
             return new JsonFeed(array(), false);
         }
         return new JsonFeed($feed, $oldJson !== $json);
