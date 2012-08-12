@@ -128,11 +128,11 @@ class JsonFeedFetcher
         } catch (ErrorException $e) {
             // I can not catch exceptions here...
             $log->warning("{$e->getMessage()} for {$userId}");
-            return $this->_readCache($cacheFile);
+            return $this->_readCache($userId);
         }
         if (empty($json)) {
             $log->warning("empty json from api for {$userId}");
-            return $this->_readCache($cacheFile);
+            return $this->_readCache($userId);
         }
         file_put_contents($cacheFile, $json);
         flock($lock, LOCK_UN);
