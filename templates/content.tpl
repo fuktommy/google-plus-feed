@@ -1,5 +1,5 @@
 {* -*- coding: utf-8 -*- *}
-{* Copyright (c) 2011,2012 Satoshi Fukutomi <info@fuktommy.com>. *}
+{* Copyright (c) 2011-2013 Satoshi Fukutomi <info@fuktommy.com>. *}
 {strip}
 
 {if ! empty($entry.annotation)}
@@ -9,6 +9,9 @@
             <blockquote><div>{$entry.object.content}</div></blockquote>
         </li>
     </ul>
+{elseif $entry.verb === "share"}
+    <p>Reshared from <a href="{$entry.object.url|escape}">{$entry.object.actor.displayName|escape}</a></p>
+    <blockquote><div>{$entry.object.content}</div></blockquote>
 {elseif ! empty($entry.object.content)}
     {$entry.object.content}
 {/if}
