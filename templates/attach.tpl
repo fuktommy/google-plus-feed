@@ -1,9 +1,9 @@
 {* -*- coding: utf-8 -*- *}
-{* Copyright (c) 2012 Satoshi Fukutomi <info@fuktommy.com>. *}
+{* Copyright (c) 2012,2013 Satoshi Fukutomi <info@fuktommy.com>. *}
 {strip}
 {if $attach.objectType === "photo"}
     {if ! empty($attach.url)}    
-        <a href="{$attach.url|escape}">
+        <a href="{$attach.url|regex_replace:"/[?]authkey=[^&]+/":""|escape}">
     {/if}
     <img src="{$attach.image.url|escape}" alt="{$attach.content|escape}"
          {**} height="{$attach.image.height|escape}"
