@@ -127,11 +127,13 @@ class JsonFeedFetcher
             $json = file_get_contents($jsonUrl);
         } catch (ErrorException $e) {
             // I can not catch exceptions here...
-            $log->warning("{$e->getMessage()} for {$userId}");
+            $headerStr = implode(', ', $http_response_header);
+            $log->warning("{$e->getMessage()} for {$userId}, {$headerStr}");
             return $this->_readCache($userId);
         }
         if (empty($json)) {
-            $log->warning("empty json from api for {$userId}");
+            $headerStr = implode(', ', $http_response_header);
+            $log->warning("empty json from api for {$userId}, {$headerStr}");
             return $this->_readCache($userId);
         }
         file_put_contents($cacheFile, $json);
