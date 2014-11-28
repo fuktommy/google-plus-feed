@@ -1,5 +1,5 @@
 {* -*- coding: utf-8 -*- *}
-{* Copyright (c) 2011-2013 Satoshi Fukutomi <info@fuktommy.com>. *}
+{* Copyright (c) 2011-2014 Satoshi Fukutomi <info@fuktommy.com>. *}
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="/atomfeed.xsl" type="text/xsl"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
@@ -16,9 +16,9 @@
   {include assign="content" file="content.tpl" entry=$entry}
   <entry>
     {if $entry.title}
-        <title>{$entry.title|trim|escape}</title>
+        <title>{$entry.title|regex_replace:'/\s+/':' '|trim|escape}</title>
     {else}
-        <title>{$content|strip_tags|regex_replace:'/\s+/':' '|htmlspecialchars_decode:$smarty.const.ENT_QUOTES|trim|mbtruncate:60|escape|default:"untitled"}</title>
+        <title>{$content|strip_tags|regex_replace:'/\s+/':' '|htmlspecialchars_decode:$smarty.const.ENT_QUOTES|regex_replace:'/\s+/':' '|trim|mbtruncate:60|escape|default:"untitled"}</title>
     {/if}
     <link rel="alternate" href="{$entry.url|escape}"/>
     <summary type="html">{$content|strip_tags|regex_replace:'/\s+/':' '|escape}</summary>
