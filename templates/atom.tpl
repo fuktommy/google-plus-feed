@@ -20,7 +20,7 @@
     {else}
         <title>{$content|strip_tags|regex_replace:'/\s+/':' '|htmlspecialchars_decode:$smarty.const.ENT_QUOTES|regex_replace:'/\s+/':' '|trim|mbtruncate:60|escape|default:"untitled"}</title>
     {/if}
-    <link rel="alternate" href="{$entry.url|escape}"/>
+    <link rel="alternate" href="{$entry.url|regex_replace:'|(?<=https://plus.google.com/)\+[^/]+|':$userId|escape}"/>
     <summary type="html">{$content|strip_tags|regex_replace:'/\s+/':' '|escape}</summary>
     <content type="html"><![CDATA[
         {$content|replace:"]]>":""}
