@@ -1,6 +1,5 @@
-{* -*- coding: utf-8 -*- *}
-{* Copyright (c) 2011-2014 Satoshi Fukutomi <info@fuktommy.com>. *}
 <?xml version="1.0" encoding="UTF-8"?>
+{* Copyright (c) 2011-2014 Satoshi Fukutomi <info@fuktommy.com>. *}
 <?xml-stylesheet href="/atomfeed.xsl" type="text/xsl"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>{$feed.items[0].actor.displayName|default:$feed.title|escape} - g+</title>

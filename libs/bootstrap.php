@@ -41,7 +41,9 @@ class Bootstrap
         $path = __DIR__ . DIRECTORY_SEPARATOR
               . strtr($className, array('\\' => DIRECTORY_SEPARATOR))
               . '.php';
-        require_once $path;
+        if (is_file($path)) {
+            require_once $path;
+        }
     }
 
     public static function handleError($errno, $errstr, $errfile, $errline)

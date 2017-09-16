@@ -6,8 +6,8 @@
         <a href="{$attach.url|regex_replace:"/[?]authkey=[^&]+/":""|escape}">
     {/if}
     <img src="{$attach.image.url|escape}" alt="{$attach.content|escape}"
-         {**} height="{$attach.image.height|escape}"
-         {**} width="{$attach.image.width|escape}" />
+         {**} height="{$attach.image.height|default:""|escape}"
+         {**} width="{$attach.image.width|default:""|escape}" />
     {if ! empty($attach.url)}    
         </a>
     {/if}
